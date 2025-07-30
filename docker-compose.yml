@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  wss-service:
+    build: .
+    volumes:
+      - .:/app
+    container_name: wss-service
+    ports:
+      - "8002:8002"
+    env_file:
+      - .env
+    depends_on:
+      - wss-db
+    networks:
+      - shared-kafka-net
+
+  wss-db:
+    image: postgres:15
+    container_name: wss-db
+    ports:
+      - "5433:5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - wss_data:/var/lib/postgresql/data
+    networks:
+      - shared-kafka-net
+
+volumes:
+  wss_data:
+
+networks:
+  shared-kafka-net:
+    external: true
