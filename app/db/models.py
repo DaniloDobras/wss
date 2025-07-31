@@ -24,8 +24,6 @@ class Bucket(Base):
     __tablename__ = "buckets"
 
     id = Column(Integer, primary_key=True)
-    material_type = Column(String, nullable=False)
-    material_qty = Column(Integer, nullable=False)
 
     position_id = Column(
         Integer,

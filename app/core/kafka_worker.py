@@ -47,9 +47,13 @@ def process_kafka():
                     db.add(bucket)
                     db.flush()  # to get bucket.id
 
-                    # Find free position
                     free_pos = db.query(Position).filter(
-                        Position.bucket is None).first()
+                        ~Position.id.in_(
+                            db.query(Bucket.position_id).filter(
+                                Bucket.position_id.isnot(None))
+                        )
+                    ).first()
+
                     if free_pos:
                         bucket.position_id = free_pos.id
                         assigned_position = free_pos

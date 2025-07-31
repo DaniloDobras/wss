@@ -10,8 +10,8 @@ from app.core.kafka_worker import start_kafka_consumer
 async def lifespan(app: FastAPI):
 
     print("WSS lifespan started.")
-   # kafka_thread = threading.Thread(target=start_kafka_consumer, daemon=True)
-    # kafka_thread.start()
+    kafka_thread = threading.Thread(target=start_kafka_consumer, daemon=True)
+    kafka_thread.start()
     yield
 
 app = FastAPI(lifespan=lifespan)
